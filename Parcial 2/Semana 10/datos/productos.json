@@ -1,0 +1,14 @@
+[
+  {
+    "codigo": "P001",
+    "nombre": "Pizza",
+    "categoria": "Platos",
+    "precio": 18.99
+  },
+  {
+    "codigo": "01",
+    "nombre": "agua",
+    "categoria": "liquido",
+    "precio": 0.5
+  }
+]
