@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import os
-from typing import List, Optional
+from typing import Dict, List, Optional
 
 from restaurante_app.modelos.producto import Producto
 from restaurante_app.modelos.usuario import Usuario
@@ -19,23 +19,26 @@ class Restaurante:
         self._usuarios: List[Usuario] = self._archivo_servicio.cargar_usuarios()
         self._ventas: List[Venta] = self._archivo_servicio.cargar_ventas()
 
+        # Índices en memoria para búsquedas rápidas por clave única
+        self._indice_productos: Dict[str, Producto] = {p.codigo: p for p in self._productos}
+        self._indice_usuarios: Dict[str, Usuario] = {u.identificacion: u for u in self._usuarios}
+        # Mapa de usuario_id -> lista de ventas para evitar recorrer todas las ventas
+        self._ventas_por_usuario: Dict[str, List[Venta]] = {}
+        for venta in self._ventas:
+            self._ventas_por_usuario.setdefault(venta.usuario_id, []).append(venta)
+
     def buscar_producto(self, codigo: str) -> Optional[Producto]:
-        for producto in self._productos:
-            if producto.codigo == codigo:
-                return producto
-        return None
+        return self._indice_productos.get(codigo)
 
     def buscar_usuario(self, identificacion: str) -> Optional[Usuario]:
-        for usuario in self._usuarios:
-            if usuario.identificacion == identificacion:
-                return usuario
-        return None
+        return self._indice_usuarios.get(identificacion)
 
     def registrar_producto(self, producto: Producto) -> bool:
-        if self.buscar_producto(producto.codigo) is not None:
+        if producto.codigo in self._indice_productos:
             return False
 
         self._productos.append(producto)
+        self._indice_productos[producto.codigo] = producto
         self._archivo_servicio.guardar_productos(self._productos)
         return True
 
@@ -47,7 +50,7 @@ class Restaurante:
         precio: Optional[float] = None,
         stock: Optional[int] = None,
     ) -> bool:
-        producto = self.buscar_producto(codigo)
+        producto = self._indice_productos.get(codigo)
         if producto is None:
             return False
 
@@ -64,15 +67,20 @@ class Restaurante:
                 raise ValueError("El stock no puede ser negativo.")
             producto.stock = int(stock)
 
+        # La instancia del producto ya está en la lista principal, solo es necesario persistir
         self._archivo_servicio.guardar_productos(self._productos)
         return True
 
     def eliminar_producto(self, codigo: str) -> bool:
-        producto = self.buscar_producto(codigo)
+        producto = self._indice_productos.get(codigo)
         if producto is None:
             return False
 
-        self._productos.remove(producto)
+        try:
+            self._productos.remove(producto)
+        except ValueError:
+            pass
+        del self._indice_productos[codigo]
         self._archivo_servicio.guardar_productos(self._productos)
         return True
 
@@ -80,10 +88,11 @@ class Restaurante:
         return list(self._productos)
 
     def registrar_usuario(self, usuario: Usuario) -> bool:
-        if self.buscar_usuario(usuario.identificacion) is not None:
+        if usuario.identificacion in self._indice_usuarios:
             return False
 
         self._usuarios.append(usuario)
+        self._indice_usuarios[usuario.identificacion] = usuario
         self._archivo_servicio.guardar_usuarios(self._usuarios)
         return True
 
@@ -91,8 +100,8 @@ class Restaurante:
         return list(self._usuarios)
 
     def vender_producto(self, codigo_producto: str, identificacion_usuario: str, cantidad: int) -> bool:
-        usuario = self.buscar_usuario(identificacion_usuario)
-        producto = self.buscar_producto(codigo_producto)
+        usuario = self._indice_usuarios.get(identificacion_usuario)
+        producto = self._indice_productos.get(codigo_producto)
 
         if usuario is None or producto is None:
             return False
@@ -101,6 +110,9 @@ class Restaurante:
 
         venta = Venta(usuario.identificacion, producto.codigo, cantidad)
         self._ventas.append(venta)
+        # Mantener índice de ventas por usuario actualizado
+        self._ventas_por_usuario.setdefault(usuario.identificacion, []).append(venta)
+
         producto.vender(cantidad)
 
         self._archivo_servicio.guardar_ventas(self._ventas)
@@ -108,11 +120,8 @@ class Restaurante:
         return True
 
     def ventas_por_usuario(self, identificacion_usuario: str) -> List[Venta]:
-        ventas_usuario: List[Venta] = []
-        for venta in self._ventas:
-            if venta.usuario_id == identificacion_usuario:
-                ventas_usuario.append(venta)
-        return ventas_usuario
+        # Usar el índice en memoria para devolver las ventas relacionadas
+        return list(self._ventas_por_usuario.get(identificacion_usuario, []))
 
     def listar_ventas(self) -> List[Venta]:
         return list(self._ventas)

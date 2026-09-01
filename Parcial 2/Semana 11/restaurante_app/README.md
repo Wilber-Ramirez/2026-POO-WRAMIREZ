@@ -1,7 +1,7 @@
-# Restaurante App - Semana 11
+# Restaurante App - Semana 11 (mejorada para Semana 12)
 
 ## Descripción
-Este proyecto evoluciona la aplicación de restaurante para administrar productos, usuarios y ventas con persistencia en JSON. El sistema conserva la lógica de negocio en `Restaurante`, con modelos separados para cada entidad y un servicio responsable de la lectura y escritura de archivos.
+Este proyecto administra productos, usuarios y ventas con persistencia en JSON. La lógica de negocio reside en `Restaurante`, con modelos separados y un servicio de archivos. En esta entrega se incorporaron índices en memoria para optimizar búsquedas frecuentes sin reemplazar las colecciones principales.
 
 ## Estructura
 
@@ -25,6 +25,16 @@ restaurante_app/
 └── README.md
 ```
 
+## Mejoras de rendimiento (Semana 12)
+- Se mantienen las listas principales `_productos`, `_usuarios` y `_ventas` para almacenamiento, recorrido y persistencia.
+- Se añadieron índices en memoria:
+  - `_indice_productos`: dict que mapea `codigo` -> instancia de Producto (búsqueda O(1) por código).
+  - `_indice_usuarios`: dict que mapea `identificacion` -> instancia de Usuario (búsqueda O(1) por identificación).
+  - `_ventas_por_usuario`: dict que mapea `usuario_id` -> lista de Venta, evitando recorrer todas las ventas para consultar por usuario.
+- Los índices se reconstruyen al iniciar la aplicación a partir de los objetos leídos desde JSON.
+- Al registrar, modificar o eliminar objetos, los índices se mantienen sincronizados con las listas principales.
+- No se reemplazaron los modelos por diccionarios: los objetos siguen siendo instancias de las clases en `modelos/`.
+
 ## Características
 - Registro de productos con atributos `codigo`, `nombre`, `categoria`, `precio` y `stock`.
 - Registro de usuarios con `identificacion`, `nombre` y `correo`.
@@ -32,7 +42,7 @@ restaurante_app/
 - Validación de stock y cantidades antes de vender.
 - Persistencia en archivos JSON con `json.dump()` y `json.load()`.
 - Recuperación automática de productos, usuarios y ventas al iniciar la aplicación.
-- Consulta de ventas por usuario mediante recorrido y filtrado de la colección de ventas.
+- Consulta de ventas por usuario optimizada mediante `_ventas_por_usuario`.
 
 ## Reglas de negocio
 - No se permiten productos con precio negativo.
@@ -41,27 +51,21 @@ restaurante_app/
 - No se puede vender más de lo que hay en stock.
 - Una venta solo se registra si existen el usuario y el producto asociados.
 
+## Comprobación mínima de funcionamiento
+- Ejecutar `main.py` y comprobar que las funcionalidades siguen operativas.
+- Registrar o cargar usuarios, productos y ventas existentes.
+- Buscar un producto por su `codigo` (búsqueda optimizada).
+- Buscar un usuario por su `identificacion` (búsqueda optimizada).
+- Consultar las ventas relacionadas con un usuario (usa índice en memoria).
+- Realizar una venta y confirmar que el `stock` se actualiza correctamente y que `_ventas_por_usuario` se actualiza.
+- Cerrar y volver a ejecutar: los índices se reconstruyen a partir de los JSON.
+
 ## Ejecución
 Desde la raíz del repositorio, ejecute:
 
 ```bash
 python "Parcial 2/Semana 11/restaurante_app/main.py"
 ```
-
-También puede ejecutarse desde la carpeta del proyecto:
-
-```bash
-cd "Parcial 2/Semana 11/restaurante_app"
-python main.py
-```
-
-## Flujo principal
-1. Registrar un usuario.
-2. Registrar un producto con stock disponible.
-3. Realizar una venta indicando usuario, producto y cantidad.
-4. Verificar que el stock disminuye.
-5. Consultar ventas por usuario.
-6. Cerrar y volver a ejecutar para comprobar la persistencia JSON.
 
 ## Persistencia
 La aplicación guarda automáticamente los cambios en:
