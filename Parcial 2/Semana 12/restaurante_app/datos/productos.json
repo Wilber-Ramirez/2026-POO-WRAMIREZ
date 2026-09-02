@@ -4,6 +4,27 @@
     "nombre": "Pizza",
     "categoria": "Comida",
     "precio": 10.5,
-    "stock": 3
+    "stock": 2
+  },
+  {
+    "codigo": "001",
+    "nombre": "papipollo",
+    "categoria": "comida",
+    "precio": 2.5,
+    "stock": 0
+  },
+  {
+    "codigo": "002",
+    "nombre": "cola",
+    "categoria": "bebidas",
+    "precio": 0.5,
+    "stock": 0
+  },
+  {
+    "codigo": "agua",
+    "nombre": "agua",
+    "categoria": "bebida",
+    "precio": 0.5,
+    "stock": 0
   }
 ]

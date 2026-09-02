@@ -1,1 +1,7 @@
-[]
+[
+  {
+    "identificacion": "123",
+    "nombre": "Test User",
+    "correo": "test@example.com"
+  }
+]

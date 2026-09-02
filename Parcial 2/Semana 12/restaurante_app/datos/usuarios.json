@@ -3,5 +3,20 @@
     "identificacion": "123",
     "nombre": "Test User",
     "correo": "test@example.com"
+  },
+  {
+    "identificacion": "01",
+    "nombre": "leo veliz",
+    "correo": "leov@gmail.com"
+  },
+  {
+    "identificacion": "02",
+    "nombre": "wilber ramirez",
+    "correo": "rlwil@gmail.com"
+  },
+  {
+    "identificacion": "03",
+    "nombre": "miguel zambrano",
+    "correo": "miguez@gmail.com"
   }
 ]
