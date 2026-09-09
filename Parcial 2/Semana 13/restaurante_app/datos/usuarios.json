@@ -1,0 +1,17 @@
+[
+  {
+    "identificacion": "123",
+    "nombre": "Test User",
+    "correo": "test@example.com"
+  },
+  {
+    "identificacion": "456",
+    "nombre": "Ana Perez",
+    "correo": "ana@ejemplo.com"
+  },
+  {
+    "identificacion": "admin",
+    "nombre": "Administrador",
+    "correo": "1234"
+  }
+]
