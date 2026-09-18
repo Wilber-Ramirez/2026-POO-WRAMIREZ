@@ -1,0 +1,58 @@
+[
+  {
+    "codigo": "P001",
+    "nombre": "Hamburguesa clasica",
+    "categoria": "Plato fuerte",
+    "precio": 8.5,
+    "stock": 15
+  },
+  {
+    "codigo": "P002",
+    "nombre": "Limonada natural",
+    "categoria": "Bebida",
+    "precio": 2.75,
+    "stock": 30
+  },
+  {
+    "codigo": "P003",
+    "nombre": "Pizza personal",
+    "categoria": "Comida rapida",
+    "precio": 6.5,
+    "stock": 12
+  },
+  {
+    "codigo": "P004",
+    "nombre": "Hot dog especial",
+    "categoria": "Comida rapida",
+    "precio": 4.25,
+    "stock": 20
+  },
+  {
+    "codigo": "P005",
+    "nombre": "Papas fritas",
+    "categoria": "Comida rapida",
+    "precio": 3.0,
+    "stock": 25
+  },
+  {
+    "codigo": "P006",
+    "nombre": "Gaseosa",
+    "categoria": "Bebida",
+    "precio": 1.75,
+    "stock": 40
+  },
+  {
+    "codigo": "P007",
+    "nombre": "Batido de fresa",
+    "categoria": "Bebida",
+    "precio": 3.5,
+    "stock": 18
+  },
+  {
+    "codigo": "P008",
+    "nombre": "Cafe con leche",
+    "categoria": "Bebida",
+    "precio": 2.25,
+    "stock": 22
+  }
+]
