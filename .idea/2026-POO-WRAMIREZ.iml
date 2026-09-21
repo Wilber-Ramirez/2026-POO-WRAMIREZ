@@ -6,6 +6,10 @@
       <sourceFolder url="file://$MODULE_DIR$/Parcial 1/Semana 6" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Parcial 2/Semana 10" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Parcial 2/Semana 14" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Parcial 2/Semana 13" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Parcial 2/Semana 11" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Parcial 2/Semana 12" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Parcial 2/Semana 15" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/.venv" />
     </content>
     <orderEntry type="jdk" jdkName="Python 3.14 (2026-POO-WRAMIREZ)" jdkType="Python SDK" />
